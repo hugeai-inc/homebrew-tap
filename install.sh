@@ -24,9 +24,9 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-log() { echo -e "${GREEN}==>${NC} $*"; }
-warn() { echo -e "${YELLOW}Warning:${NC} $*" >&2; }
-error() { echo -e "${RED}Error:${NC} $*" >&2; exit 1; }
+log() { printf '%b%s%b %s\n' "$GREEN" "==>" "$NC" "$*"; }
+warn() { printf '%b%s%b %s\n' "$YELLOW" "Warning:" "$NC" "$*" >&2; }
+error() { printf '%b%s%b %s\n' "$RED" "Error:" "$NC" "$*" >&2; exit 1; }
 
 # Detect OS and architecture
 detect_platform() {
@@ -166,7 +166,7 @@ main() {
     sudo chmod +x "${INSTALL_DIR}/${BINARY_NAME}"
   fi
 
-  log "${GREEN}✓${NC} ${PACKAGE_NAME} ${VERSION} installed successfully!"
+  printf '%b%s%b %s\n' "$GREEN" "==>" "$NC" "✓ ${PACKAGE_NAME} ${VERSION} installed successfully!"
   log ""
   log "Run '${BINARY_NAME} --version' to verify the installation."
   log "Run '${BINARY_NAME} help' to get started."
