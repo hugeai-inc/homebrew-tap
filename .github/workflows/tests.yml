@@ -13,11 +13,15 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      # setup-homebrew checks out this tap into Homebrew's tap path, so a
+      # separate actions/checkout is unnecessary and a local .rb path install
+      # is ignored in favor of the formula name.
       - name: Set up Homebrew
+        id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
       - name: Install formula
-        # Use an absolute path: setup-homebrew may leave the shell outside the checkout.
-        run: brew install --formula "${{ github.workspace }}/Formula/mc-cli.rb"
+        run: brew install hugeai-inc/tap/mc-cli
       - name: Test formula
-        run: brew test mc-cli
+        run: brew test hugeai-inc/tap/mc-cli
+      - name: Check version
+        run: mc version --plain
