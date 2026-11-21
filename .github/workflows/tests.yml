@@ -8,6 +8,7 @@ on:
 jobs:
   test:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
@@ -16,6 +17,7 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@main
       - name: Install formula
-        run: brew install --formula ./Formula/mc-cli.rb
+        # Use an absolute path: setup-homebrew may leave the shell outside the checkout.
+        run: brew install --formula "${{ github.workspace }}/Formula/mc-cli.rb"
       - name: Test formula
         run: brew test mc-cli
