@@ -1,0 +1,21 @@
+name: Homebrew Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Install formula
+        run: brew install --formula ./Formula/mc-cli.rb
+      - name: Test formula
+        run: brew test mc-cli
